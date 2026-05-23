@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروژه معرفی دانشجو</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e3f2fd; /* پس زمینه آبی روشن */
+            color: #333;
+            line-height: 1.6;
+            direction: rtl;
+        }
+
+        header {
+            background-color: #2196f3; /* آبی */
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-bottom: 5px solid #1976d2; /* آبی تیره */
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            background-color: white;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #0d47a1;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        button {
+            background-color: #2196f3; /* رنگ آبی */
+            color: white;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1976d2; /* آبی تیره */
+        }
+
+        button.submit-btn {
+            background-color: #0d47a1; /* آبی تیره */
+        }
+
+        button.submit-btn:hover {
+            background-color: #1565c0; /* آبی روشن */
+        }
+
+        button.delete-btn {
+            background-color: #e53935; /* قرمز */
+            color: white;
+        }
+
+        button.delete-btn:hover {
+            background-color: #d32f2f; /* قرمز تیره */
+        }
+
+        button.edit-btn {
+            background-color: #8e24aa; /* بنفش */
+            color: white;
+        }
+
+        button.edit-btn:hover {
+            background-color: #7b1fa2; /* بنفش تیره */
+        }
+
+        button.submit-btn,
+        button.delete-btn,
+        button.edit-btn {
+            width: auto; /* تغییر اندازه دکمه‌ها */
+            padding: 10px 20px;
+        }
+
+        #student-list li {
+            padding: 12px;
+            background-color: #fafafa;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 5px solid #1976d2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-btns button {
+            margin-left: 10px;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        #bmi-result, #average-result {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            color: #388e3c;
+        }
+
+        #error-message {
+            color: red;
+        }
+
+        .health-tips {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #bbdefb; /* پس‌زمینه آبی ملایم */
+            border-radius: 6px;
+            font-size: 1.1rem;
+            color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>پروژه معرفی دانشجو</h1>
+    </header>
+
+    <div class="container">
+        <!-- معرفی دانشجو -->
+        <section class="student-info">
+            <h2>معرفی دانشجو</h2>
+            <p><strong>نام:</strong> علی نیازلو</p>
+            <p><strong>کد دانشجویی:</strong> 403639756</p>
+            <p><strong>درس مربوطه:</strong> پروژه</p>
+            <p><strong>استاد مربوطه:</strong> استاد واصبی</p>
+            <p><strong>رشته تحصیلی:</strong> نرم افزار کامپیوتر</p>
+            <p><strong>مقطع تحصیلی:</strong> کارشناسی ناپیوسته</p>
+            <p><strong>دانشگاه:</strong> دانشگاه آزاد اسلامی واحد سراب</p>
+        </section>
+
+        <!-- مدیریت پایگاه داده -->
+        <section class="student-db">
+            <h2>مدیریت پایگاه داده</h2>
+            <form id="student-form">
+                <input type="text" id="student-name" placeholder="نام و نام خانوادگی" required>
+                <input type="number" id="student-id" placeholder="کد دانشجویی (4 رقمی)" required>
+                <input type="number" id="student-grade" placeholder="نمره (0 تا 20)" required>
+                <button type="submit" class="submit-btn">ثبت اطلاعات</button>
+            </form>
+            <div id="error-message"></div>
+        </section>
+
+        <!-- لیست دانشجویان ثبت‌شده -->
+        <section class="student-list">
+            <h2>لیست دانشجویان ثبت‌شده</h2>
+            <ul id="student-list"></ul>
+            <button id="calculate-average" class="submit-btn">محاسبه معدل ترم</button>
+            <div id="average-result"></div>
+        </section>
+
+        <!-- محاسبه شاخص توده بدنی -->
+        <section class="bmi-calculator">
+            <h2>محاسبه شاخص توده بدنی (BMI)</h2>
+            <form id="bmi-form">
+                <input type="number" id="weight" placeholder="وزن (کیلوگرم)" required>
+                <input type="number" id="height" placeholder="قد (سانتی‌متر)" required>
+                <button type="submit" class="submit-btn">محاسبه BMI</button>
+            </form>
+            <div id="bmi-result"></div>
+            <div class="health-tips" id="health-tip">در حال حاضر هیچ توصیه‌ای برای سلامتی وجود ندارد.</div>
+            <button id="change-tip" class="submit-btn">توصیه سلامتی جدید</button>
+        </section>
+    </div>
+
+    <script>
+        const healthTips = [
+            "برای حفظ سلامتی، روزانه حداقل 30 دقیقه ورزش کنید.",
+            "از مصرف بیش از حد غذاهای چرب و شیرین پرهیز کنید.",
+            "برای حفظ سلامت قلب، مصرف میوه‌ها و سبزیجات را افزایش دهید.",
+            "آب کافی بنوشید و از نوشیدنی‌های شیرین و گازدار اجتناب کنید.",
+            "خواب کافی و استراحت روزانه برای بدن ضروری است.",
+            "برای کاهش استرس، روش‌های مدیتیشن و یوگا را امتحان کنید."
+        ];
+
+        document.getElementById('student-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('student-name').value;
+            const studentId = document.getElementById('student-id').value;
+            const grade = document.getElementById('student-grade').value;
+            const errorMessage = document.getElementById('error-message');
+
+            // بررسی 4 رقمی بودن کد دانشجویی
+            if (studentId.length !== 4) {
+                errorMessage.textContent = "کد دانشجویی باید 4 رقمی باشد";
+                errorMessage.classList.add('error');
+                return;
+            }
+
+            // بررسی نمره
+            if (grade < 0 || grade > 20) {
+                errorMessage.textContent = "نمره را صحیح از 0 تا 20 وارد کنید";
+                errorMessage.classList.add('error');
+                return;
+            }
+
+            // بررسی تکراری بودن کد دانشجویی
+            if (localStorage.getItem(studentId)) {
+                errorMessage.textContent = "شماره دانشجویی قبلاً ثبت شده است/دانشجوی رشته دیگری است";
+                errorMessage.classList.add('error');
+                return;
+            }
+
+            const studentData = {
+                name: name,
+                studentId: studentId,
+                grade: grade
+            };
+            localStorage.setItem(studentId, JSON.stringify(studentData));
+            errorMessage.textContent = "اطلاعات با موفقیت ثبت شد.";
+            errorMessage.classList.remove('error');
+
+            // نمایش اطلاعات جدید در لیست
+            displayStudentList();
+        });
+
+        // تابع برای نمایش اطلاعات ثبت‌شده در لیست
+        function displayStudentList() {
+            const studentList = document.getElementById('student-list');
+            studentList.innerHTML = ''; // پاک کردن لیست قبلی
+
+            // دریافت تمام داده‌های دانشجویی از localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const studentId = localStorage.key(i);
+                const studentData = JSON.parse(localStorage.getItem(studentId));
+
+                const li = document.createElement('li');
+                li.textContent = `نام: ${studentData.name}, کد دانشجویی: ${studentData.studentId}, نمره: ${studentData.grade}`;
+
+                // دکمه‌های حذف و ویرایش
+                const actionBtns = document.createElement('div');
+                actionBtns.classList.add('action-btns');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'حذف';
+                deleteBtn.classList.add('delete-btn');
+                deleteBtn.addEventListener('click', function() {
+                    if (confirm('آیا مطمئنید که می‌خواهید حذف کنید؟')) {
+                        localStorage.removeItem(studentId);
+                        displayStudentList(); // بروزرسانی لیست پس از حذف
+                    }
+                });
+
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'ویرایش';
+                editBtn.classList.add('edit-btn');
+                editBtn.addEventListener('click', function() {
+                    const newName = prompt("نام جدید خود را وارد کنید:", studentData.name);
+                    const newId = prompt("کد دانشجویی جدید خود را وارد کنید:", studentData.studentId);
+
+                    if (newName && newId) {
+                        studentData.name = newName;
+                        studentData.studentId = newId;
+                        localStorage.setItem(studentData.studentId, JSON.stringify(studentData));
+                        displayStudentList(); // بروزرسانی لیست پس از ویرایش
+                    }
+                });
+
+                actionBtns.appendChild(deleteBtn);
+                actionBtns.appendChild(editBtn);
+                li.appendChild(actionBtns);
+
+                studentList.appendChild(li);
+            }
+        }
+
+        displayStudentList(); // نمایش اطلاعات موجود از پیش در لیست
+
+        // محاسبه معدل ترم
+        document.getElementById('calculate-average').addEventListener('click', function() {
+            let totalGrades = 0;
+            let studentCount = 0;
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const studentData = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                totalGrades += studentData.grade;
+                studentCount++;
+            }
+
+            const average = studentCount > 0 ? (totalGrades / studentCount).toFixed(2) : 0;
+            document.getElementById('average-result').textContent = `معدل ترم: ${average}`;
+        });
+
+        // محاسبه BMI
+        document.getElementById('bmi-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // تبدیل قد به متر
+
+            const bmi = (weight / (height * height)).toFixed(2);
+            document.getElementById('bmi-result').textContent = `شاخص توده بدنی شما: ${bmi}`;
+
+            if (bmi < 18.5) {
+                document.getElementById('bmi-result').textContent += " - وزن کم.";
+            } else if (bmi < 24.9) {
+                document.getElementById('bmi-result').textContent += " - وزن نرمال.";
+            } else if (bmi < 29.9) {
+                document.getElementById('bmi-result').textContent += " - اضافه وزن.";
+            } else {
+                document.getElementById('bmi-result').textContent += " - چاقی.";
+            }
+        });
+
+        // تغییر توصیه‌های سلامتی با هر بار کلیک
+        document.getElementById('change-tip').addEventListener('click', function() {
+            const randomIndex = Math.floor(Math.random() * healthTips.length);
+            document.getElementById('health-tip').textContent = healthTips[randomIndex];
+        });
+    </script>
+</body>
+</html>
